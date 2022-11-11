@@ -1,0 +1,35 @@
+server:
+  port: 6071
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: TouristData
+          uri: http://localhost:9005/
+          predicates:
+            - Path= /tourist/**
+      discovery:        locator:          enabled: true
+          lower-case-service-id: true
+      default-filters:      - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:        cors-configurations:          '[/**]':
+              allowedOrigins: "http://localhost:4200"
+              allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - DELETE
+              - OPTIONS
+              allowedHeaders: "*"
+              allowCredentials: true              
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
